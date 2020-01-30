@@ -51,24 +51,73 @@ function playVideoOnScroll(){
 inicializarSlider();
 playVideoOnScroll();
 
-$('#mostrarTodos').click(function(event){
-  alert ("funciona el botón");
-  //document.getElementByClassName("colContenido").innerHTML='<img src="../img/home.jpg" />';
-  //$(document).ready(function(){
+function seleccionarCiudad(data){
+  var arrayCiudad = [];
+  $.each(data,function(indice,elemento){
+    var ciudad = elemento.Ciudad;
+    var idx = arrayCiudad.indexOf(ciudad);
+    if(idx == -1){
+      var insertar="<option value=''>"+ciudad+"</option>";
+      $("#selectCiudad").append(insertar);
+      arrayCiudad.push(ciudad);
+    }
+  });
+  return arrayCiudad;
+}
 
-            event.preventDefault();
-            $.ajax({
-                url: "./data-1.json",
-                type: "POST",
-                cache: false,
-                success: function(data){
-                    console.log(data);
-                },
-                error: function(data){
-                    console.log("error");
-                }
-            });
+function seleccionarTipo(data){
+  var arrayTipo = [];
+  $.each(data,function(indice,elemento){
+    var tipo = elemento.Tipo;
+    var idx = arrayTipo.indexOf(tipo);
+    if(idx == -1){
+      var insertar="<option value=''>"+tipo+"</option>";
+      $("#selectTipo").append(insertar);
+      arrayTipo.push(tipo);
+    }
+  });
+  return arrayTipo;
+}
 
-    //});
+$(document).ready(function(event){
+  $.ajax({
+    url: "./data-1.json",
+    type: "POST",
+    cache: false,
+    success: function(data){
+      seleccionarCiudad(data);
+      seleccionarTipo(data);
+      $("#selectCiudad").show();
+      $("#selectTipo").show();
+    },
+    error: function(data){
+      console.log("error");
+    }
+  });
 })
-//<img src="img/home.jpg" width="200" height="150">
+
+$('#mostrarTodos').click(function(event){
+  //alert ("funciona el botón");
+  event.preventDefault();
+  $.ajax({
+    //url: "Access-Control-Allow-Origin: https://github.com/CrisHeredia/ProyectoModulo6/blob/master/data-1.json",
+    url: "./data-1.json",
+    type: "POST",
+    cache: false,
+    success: function(data){
+      console.log("datos cargados correctamente");
+      $.each(data,function(indice,elemento){
+        var insertar="<div class='card-left card row'><div class='col s3'><img class='imagen' src='img/home.jpg'/></div><div class='col s9'><div>Dirección: "+elemento.Direccion+"</div><div>Ciudad: "+elemento.Ciudad+"</div><div>Teléfono: "+elemento.Telefono+"</div><div>Código_Postal: "+elemento.Codigo_Postal+"</div><div>Tipo: "+elemento.Tipo+"</div><div>Precio: "+elemento.Precio+"<div class='divider'></div><div class='VerMas'>Ver mas</div></div></div>";
+        $(".colContenido").append(insertar);
+      });
+    },
+    error: function(data){
+      console.log("error");
+    }
+  });
+})
+
+/*<option value="New York">New York</option>
+<option value="Orlando">Orlando</option>
+<option value="Washington">Washington</option>
+<option value="Miami">Miami</option>*/

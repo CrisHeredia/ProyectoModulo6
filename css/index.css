@@ -143,3 +143,23 @@ video#vidFondo {
 .card-action{
   text-align: right;
 }
+.card-left{
+  width: 100%;
+  min-height: 170px;
+  background-color: #F2F2F2;
+  display: inline-block;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  padding: 5px;
+}
+.imagen{
+  width:100%;
+}
+.VerMas{
+  color:orange;
+  text-align: right;
+}
+.formatoLista{
+  margin-top: 40px;
+  height: 30px;
+}

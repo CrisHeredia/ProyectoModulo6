@@ -14,7 +14,6 @@
 
 <body>
   <video src="img/video.mp4" id="vidFondo"></video>
-
   <div class="contenedor">
     <div class="card rowTitulo">
       <h1>Buscador</h1>
@@ -26,14 +25,18 @@
             <h5>Realiza una búsqueda personalizada</h5>
           </div>
           <div class="filtroCiudad input-field">
-            <label for="selectCiudad">Ciudad:</label>
-            <select name="ciudad" id="selectCiudad">
-              <option value="" selected>Elige una ciudad</option>
-            </select>
+            <div class="row">
+              <label for="selectCiudad">Ciudad:</label>
+            </div>
+            <div class="row">
+              <select name="ciudad" id="selectCiudad" class="formatoLista">
+                <option value="" selected>Elige una ciudad</option>
+              </select>
+            </div>
           </div>
           <div class="filtroTipo input-field">
             <label for="selecTipo">Tipo:</label><br>
-            <select name="tipo" id="selectTipo">
+            <select name="tipo" id="selectTipo" class="formatoLista">
               <option value="" selected>Elige un tipo</option>
             </select>
           </div>
@@ -53,9 +56,7 @@
         <h5>Resultados de la búsqueda:</h5>
         <div class="divider"></div>
         <button type="button" name="todos" class="btn-flat waves-effect" id="mostrarTodos">Mostrar Todos</button>
-        <input type="file" name="data"/>
       </div>
-    </div>
   </div>
 
   <script type="text/javascript" src="js/jquery-3.0.0.js"></script>
