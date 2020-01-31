@@ -57,7 +57,7 @@ function seleccionarCiudad(data){
     var ciudad = elemento.Ciudad;
     var idx = arrayCiudad.indexOf(ciudad);
     if(idx == -1){
-      var insertar="<option value=''>"+ciudad+"</option>";
+      var insertar="<option value='"+ciudad+"'>"+ciudad+"</option>";
       $("#selectCiudad").append(insertar);
       arrayCiudad.push(ciudad);
     }
@@ -71,7 +71,7 @@ function seleccionarTipo(data){
     var tipo = elemento.Tipo;
     var idx = arrayTipo.indexOf(tipo);
     if(idx == -1){
-      var insertar="<option value=''>"+tipo+"</option>";
+      var insertar="<option value='"+tipo+"'>"+tipo+"</option>";
       $("#selectTipo").append(insertar);
       arrayTipo.push(tipo);
     }
@@ -117,7 +117,31 @@ $('#mostrarTodos').click(function(event){
   });
 })
 
-/*<option value="New York">New York</option>
-<option value="Orlando">Orlando</option>
-<option value="Washington">Washington</option>
-<option value="Miami">Miami</option>*/
+
+$('#formulario').submit(function(event){
+  event.preventDefault();
+  var ciudad = $('form').find('select[name="ciudad"]').val();
+  document.cookie ='varCiudad='+ciudad+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+  //alert (ciudad);
+  var tipo = $('form').find('select[name="tipo"]').val();
+  document.cookie ='varTipo='+tipo+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+  //alert (tipo);
+  var precio = $('form').find('input[name="precio"]').val();
+  document.cookie ='varPrecio='+precio+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+  //alert (precio);
+  $.ajax({
+    url: "./buscador.php",
+    //dataType: "json",
+    //cache: false,
+    //contentType: false,
+    //processData: false,
+    type: "POST",
+    success: function(data){
+      //console.log(data);
+      $(".colContenido").append(data);
+    },
+    error: function(data){
+      console.log("error");
+    }
+  });
+})
