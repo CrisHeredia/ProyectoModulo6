@@ -96,11 +96,16 @@ $(document).ready(function(event){
   });
 })
 
+function borrarTodos(){
+    document.getElementsByClassName("colContenido")[0].remove();
+    var insertar="<div class='colContenido'><div class='tituloContenido card'><h5>Resultados de la búsqueda:</h5><div class='divider'></div><button type='button' name='todos' class='btn-flat waves-effect' id='mostrarTodos'>Mostrar Todos</button></div></div>";
+    $(".contenedor").append(insertar);
+}
+
 $('#mostrarTodos').click(function(event){
-  //alert ("funciona el botón");
   event.preventDefault();
+  borrarTodos();
   $.ajax({
-    //url: "Access-Control-Allow-Origin: https://github.com/CrisHeredia/ProyectoModulo6/blob/master/data-1.json",
     url: "./data-1.json",
     type: "POST",
     cache: false,
@@ -117,9 +122,9 @@ $('#mostrarTodos').click(function(event){
   });
 })
 
-
 $('#formulario').submit(function(event){
   event.preventDefault();
+  borrarTodos();
   var ciudad = $('form').find('select[name="ciudad"]').val();
   document.cookie ='varCiudad='+ciudad+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
   //alert (ciudad);
@@ -127,8 +132,12 @@ $('#formulario').submit(function(event){
   document.cookie ='varTipo='+tipo+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
   //alert (tipo);
   var precio = $('form').find('input[name="precio"]').val();
-  document.cookie ='varPrecio='+precio+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
-  //alert (precio);
+  var posIndice = precio.indexOf(';');
+  var precioInicial = precio.substring(0,posIndice);
+  var precioFinal = precio.substring(posIndice+1,precio.length);
+  document.cookie ='varPrecioInicio='+precioInicial+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+  document.cookie ='varPrecioFinal='+precioFinal+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
+  //alert (posIndice+"  "+precioInicial+"  "+precioFinal);
   $.ajax({
     url: "./buscador.php",
     //dataType: "json",
