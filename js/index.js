@@ -1,6 +1,4 @@
-/*
-  Creación de una función personalizada para jQuery que detecta cuando se detiene el scroll en la página
-*/
+//Creación de una función personalizada para jQuery que detecta cuando se detiene el scroll en la página
 $.fn.scrollEnd = function(callback, timeout) {
   $(this).scroll(function(){
     var $this = $(this);
@@ -10,10 +8,8 @@ $.fn.scrollEnd = function(callback, timeout) {
     $this.data('scrollTimeout', setTimeout(callback,timeout));
   });
 };
-/*
-  Función que inicializa el elemento Slider
-*/
 
+//Función que inicializa el elemento Slider
 function inicializarSlider(){
   $("#rangoPrecio").ionRangeSlider({
     type: "double",
@@ -25,9 +21,8 @@ function inicializarSlider(){
     prefix: "$"
   });
 }
-/*
-  Función que reproduce el video de fondo al hacer scroll, y deteiene la reproducción al detener el scroll
-*/
+
+//Función que reproduce el video de fondo al hacer scroll, y deteiene la reproducción al detener el scroll
 function playVideoOnScroll(){
   var ultimoScroll = 0,
       intervalRewind;
@@ -96,24 +91,27 @@ $(document).ready(function(event){
   });
 })
 
-function borrarTodos(){
-    document.getElementsByClassName("colContenido")[0].remove();
-    var insertar="<div class='colContenido'><div class='tituloContenido card'><h5>Resultados de la búsqueda:</h5><div class='divider'></div><button type='button' name='todos' class='btn-flat waves-effect' id='mostrarTodos'>Mostrar Todos</button></div></div>";
-    $(".contenedor").append(insertar);
+function borrarElementos(){
+  var propiedad = document.getElementById("conPropiedad");
+  if (propiedad != null) {
+    document.getElementById("conPropiedad").remove();
+  }
 }
 
 $('#mostrarTodos').click(function(event){
   event.preventDefault();
-  borrarTodos();
+  borrarElementos();
   $.ajax({
     url: "./data-1.json",
     type: "POST",
     cache: false,
     success: function(data){
       console.log("datos cargados correctamente");
+      var conPropiedad="<div class='card-left card row' id='conPropiedad'></div>";
+      $(".colContenido").append(conPropiedad);
       $.each(data,function(indice,elemento){
-        var insertar="<div class='card-left card row'><div class='col s3'><img class='imagen' src='img/home.jpg'/></div><div class='col s9'><div>Dirección: "+elemento.Direccion+"</div><div>Ciudad: "+elemento.Ciudad+"</div><div>Teléfono: "+elemento.Telefono+"</div><div>Código_Postal: "+elemento.Codigo_Postal+"</div><div>Tipo: "+elemento.Tipo+"</div><div>Precio: "+elemento.Precio+"<div class='divider'></div><div class='VerMas'>Ver mas</div></div></div>";
-        $(".colContenido").append(insertar);
+        var insertar="<div class='col s3'><img class='imagen' src='img/home.jpg'/></div><div class='col s9'><div>Dirección: "+elemento.Direccion+"</div><div>Ciudad: "+elemento.Ciudad+"</div><div>Teléfono: "+elemento.Telefono+"</div><div>Código_Postal: "+elemento.Codigo_Postal+"</div><div>Tipo: "+elemento.Tipo+"</div><div>Precio: "+elemento.Precio+"</div><div class='VerMas'>Ver mas</div><div class='divider'></div>";
+        $("#conPropiedad").append(insertar);
       });
     },
     error: function(data){
@@ -124,20 +122,17 @@ $('#mostrarTodos').click(function(event){
 
 $('#formulario').submit(function(event){
   event.preventDefault();
-  borrarTodos();
+  borrarElementos();
   var ciudad = $('form').find('select[name="ciudad"]').val();
   document.cookie ='varCiudad='+ciudad+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
-  //alert (ciudad);
   var tipo = $('form').find('select[name="tipo"]').val();
   document.cookie ='varTipo='+tipo+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
-  //alert (tipo);
   var precio = $('form').find('input[name="precio"]').val();
   var posIndice = precio.indexOf(';');
   var precioInicial = precio.substring(0,posIndice);
   var precioFinal = precio.substring(posIndice+1,precio.length);
   document.cookie ='varPrecioInicio='+precioInicial+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
   document.cookie ='varPrecioFinal='+precioFinal+'; expires=Thu, 2 Aug 2021 20:47:11 UTC; path=/';
-  //alert (posIndice+"  "+precioInicial+"  "+precioFinal);
   $.ajax({
     url: "./buscador.php",
     //dataType: "json",
@@ -146,7 +141,6 @@ $('#formulario').submit(function(event){
     //processData: false,
     type: "POST",
     success: function(data){
-      //console.log(data);
       $(".colContenido").append(data);
     },
     error: function(data){
